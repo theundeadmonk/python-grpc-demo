@@ -2,7 +2,7 @@ import grpc
 from concurrent import futures
 
 from python_grpc_demo.grpc_types.greeting_pb2_grpc import add_GreeterServicer_to_server
-from python_grpc_demo.servicers.greeter import Greeter
+from python_grpc_demo.server.servicers.greeter import Greeter
 
 
 def serve() -> None:
