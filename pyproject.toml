@@ -14,6 +14,7 @@ pytest = "^5.2"
 
 [tool.poetry.scripts]
 run-grpc-server = "python_grpc_demo.server.server:serve"
+run-grpc-client = "python_grpc_demo.client.client:run"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
