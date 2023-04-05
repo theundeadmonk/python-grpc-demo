@@ -4,7 +4,6 @@ import grpc
 
 import python_grpc_demo.grpc_types.greeting_pb2 as greeting__pb2
 
-
 class GreeterStub(object):
     """Missing associated documentation comment in .proto file."""
 
@@ -19,6 +18,11 @@ class GreeterStub(object):
                 request_serializer=greeting__pb2.GreetingRequest.SerializeToString,
                 response_deserializer=greeting__pb2.GreetingResponse.FromString,
                 )
+        self.Chat = channel.stream_stream(
+                '/tutorial.Greeter/Chat',
+                request_serializer=greeting__pb2.GreetingRequest.SerializeToString,
+                response_deserializer=greeting__pb2.GreetingResponse.FromString,
+                )
 
 
 class GreeterServicer(object):
@@ -30,11 +34,22 @@ class GreeterServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def Chat(self, request_iterator, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_GreeterServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'Greet': grpc.unary_unary_rpc_method_handler(
                     servicer.Greet,
+                    request_deserializer=greeting__pb2.GreetingRequest.FromString,
+                    response_serializer=greeting__pb2.GreetingResponse.SerializeToString,
+            ),
+            'Chat': grpc.stream_stream_rpc_method_handler(
+                    servicer.Chat,
                     request_deserializer=greeting__pb2.GreetingRequest.FromString,
                     response_serializer=greeting__pb2.GreetingResponse.SerializeToString,
             ),
@@ -60,6 +75,23 @@ class Greeter(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/tutorial.Greeter/Greet',
+            greeting__pb2.GreetingRequest.SerializeToString,
+            greeting__pb2.GreetingResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def Chat(request_iterator,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.stream_stream(request_iterator, target, '/tutorial.Greeter/Chat',
             greeting__pb2.GreetingRequest.SerializeToString,
             greeting__pb2.GreetingResponse.FromString,
             options, channel_credentials,

@@ -11,4 +11,5 @@ message GreetingResponse {
 
 service Greeter {
   rpc Greet(GreetingRequest) returns (GreetingResponse );
+  rpc Chat(stream GreetingRequest) returns (stream GreetingResponse);
 }
